@@ -27,7 +27,7 @@ const CloseNavbar=()=>{
           </NavLink>
           {/* nav mid item */}
           <nav className="main-nav hidden lg:flex">
-            <ul className="menus flex gap-8">
+            <ul className="menus flex gap-4">
                 {menuItemsData.map((menu,index)=>{
                     return(
                         <MenuItems items={menu} key={index} depthLevel={depthLevel} />

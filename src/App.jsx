@@ -86,7 +86,7 @@ const routes = [
   { path: "/BulkSmsBlog", element: <BulkSmsBlog /> },
   { path: "/BulkEmailBlog", element: <BulkEmailBlog /> },
   { path: "/SmsApiBlog", element: <SmsApiBlog /> },
-  { path: "*", element: <Error /> },
+  { path: "*", element: <Home /> },
 ];
 
 
