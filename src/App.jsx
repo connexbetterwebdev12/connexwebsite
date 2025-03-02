@@ -20,7 +20,9 @@ const SMS = lazy(() => import("./Pages/SMS/SMS"));
 const SMSAPI = lazy(() => import("./Pages/SMS/SMSAPI"));
 const BulkSMS = lazy(() => import("./Pages/SMS/BulkSMS"));
 const InternationalSMS = lazy(() => import("./Pages/SMS/InternationalSMS"));
-const TwoFactorAuthentication = lazy(() => import("./Pages/SMS/TwoFactorAuthentication"));
+const TwoFactorAuthentication = lazy(() =>
+  import("./Pages/SMS/TwoFactorAuthentication")
+);
 const Email = lazy(() => import("./Pages/Email/Email"));
 const WhatsApp = lazy(() => import("./Pages/WHATSAPP/WhatsApp"));
 const TermsOfService = lazy(() => import("./Pages/TermandCondition"));
@@ -34,7 +36,7 @@ const VoiceOBD = lazy(() => import("./Pages/Voice/VoiceOBD"));
 const BulkSmsBlog = lazy(() => import("./Pages/Blog/BulkSmsBlog"));
 const BulkEmailBlog = lazy(() => import("./Pages/Blog/BulkEmailBlog"));
 const SmsApiBlog = lazy(() => import("./Pages/Blog/SmsApiBlog"));
-const Blog=lazy(()=>import("./Pages/Blog/Blog"))
+const Blog = lazy(() => import("./Pages/Blog/Blog"));
 import ScrollToTop from "./ScrollToTop";
 // Action Functions
 import { handelScheduleDemo } from "./Pages/ScheduleDemo";
@@ -43,11 +45,16 @@ import { handelCareer } from "./Pages/Career";
 
 // Reusable Page Wrapper
 const PageWrapper = ({ children }) => (
-  
   <>
-     <ScrollToTop /> {/* Ensure ScrollToTop is included here */}
+    <ScrollToTop /> {/* Ensure ScrollToTop is included here */}
     <Multilevelnav />
-    <Suspense fallback={<div className="flex items-center justify-center w-screen h-screen">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center w-screen h-screen">
+          Loading...
+        </div>
+      }
+    >
       {children}
     </Suspense>
     <Footer />
@@ -58,13 +65,17 @@ const PageWrapper = ({ children }) => (
 const routes = [
   { path: "/", element: <Home /> },
   { path: "/About", element: <About /> },
-{ path: "/SMSPricing", element: <SMSPricing /> },
+  { path: "/SMSPricing", element: <SMSPricing /> },
   { path: "/WhatsAppPricing", element: <WhatsAppPricing /> },
   { path: "/RCSPricing", element: <RCSPricing /> },
   { path: "/EmailPricing", element: <EmailPricing /> },
   { path: "/VoicePricing", element: <VoicePricing /> },
   { path: "/Contact", element: <Contact />, action: handleContact },
-  { path: "/ScheduleDemo", element: <ScheduleDemo />, action: handelScheduleDemo },
+  {
+    path: "/ScheduleDemo",
+    element: <ScheduleDemo />,
+    action: handelScheduleDemo,
+  },
   { path: "/Career", element: <Career />, action: handelCareer },
   { path: "/RCS", element: <RCS /> },
   { path: "/SMS", element: <SMS /> },
@@ -82,13 +93,12 @@ const routes = [
   { path: "/IVR", element: <IVR /> },
   { path: "/Voice", element: <Voice /> },
   { path: "/VoiceOBD", element: <VoiceOBD /> },
-  {path: "/Blog", element: <Blog></Blog>},
+  { path: "/Blog", element: <Blog></Blog> },
   { path: "/BulkSmsBlog", element: <BulkSmsBlog /> },
   { path: "/BulkEmailBlog", element: <BulkEmailBlog /> },
   { path: "/SmsApiBlog", element: <SmsApiBlog /> },
   { path: "*", element: <Home /> },
 ];
-
 
 // Router Configuration
 const router = createBrowserRouter(
@@ -101,11 +111,9 @@ const router = createBrowserRouter(
 
 // Main App Component
 export const App = () => {
-  return <>
-    <RouterProvider router={router}>
-   
-    </RouterProvider>
-  </>
- 
+  return (
+    <>
+      <RouterProvider router={router}></RouterProvider>
+    </>
+  );
 };
-
