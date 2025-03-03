@@ -41,10 +41,6 @@ const BulkEmailBlog = lazy(() => import("./Pages/Blog/BulkEmailBlog"));
 const SmsApiBlog = lazy(() => import("./Pages/Blog/SmsApiBlog"));
 const Blog = lazy(() => import("./Pages/Blog/Blog"));
 import ScrollToTop from "./ScrollToTop";
-// Action Functions
-import { handelScheduleDemo } from "./Pages/ScheduleDemo";
-import { handleContact } from "./Pages/Contact";
-import { handelCareer } from "./Pages/Career";
 
 // Reusable Page Wrapper
 const PageWrapper = ({ children }) => (
@@ -73,13 +69,9 @@ const routes = [
   { path: "/RCSPricing", element: <RCSPricing /> },
   { path: "/EmailPricing", element: <EmailPricing /> },
   { path: "/VoicePricing", element: <VoicePricing /> },
-  { path: "/Contact", element: <Contact />, action: handleContact },
-  {
-    path: "/ScheduleDemo",
-    element: <ScheduleDemo />,
-    action: handelScheduleDemo,
-  },
-  { path: "/Career", element: <Career />, action: handelCareer },
+  { path: "/Contact", element: <Contact /> },
+  { path: "/ScheduleDemo", element: <ScheduleDemo /> },
+  { path: "/Career", element: <Career /> },
   { path: "/RCS", element: <RCS /> },
   { path: "/SMS", element: <SMS /> },
   { path: "/SMSAPI", element: <SMSAPI /> },
