@@ -18,6 +18,9 @@ const Error = lazy(() => import("./Pages/Error"));
 const RCS = lazy(() => import("./Pages/RCS/RCS"));
 const SMS = lazy(() => import("./Pages/SMS/SMS"));
 const SMSAPI = lazy(() => import("./Pages/SMS/SMSAPI"));
+const VoiceAPI = lazy(() => import("./Pages/VoiceAPI/VoiceAPI"));
+const EmailAPI = lazy(() => import("./Pages/EmailAPI/EmailAPI"));
+const OTPAPI = lazy(() => import("./Pages/OTPAPI/OTPAPI"));
 const BulkSMS = lazy(() => import("./Pages/SMS/BulkSMS"));
 const InternationalSMS = lazy(() => import("./Pages/SMS/InternationalSMS"));
 const TwoFactorAuthentication = lazy(() =>
@@ -80,6 +83,9 @@ const routes = [
   { path: "/RCS", element: <RCS /> },
   { path: "/SMS", element: <SMS /> },
   { path: "/SMSAPI", element: <SMSAPI /> },
+  { path: "/VoiceAPI", element: <VoiceAPI /> },
+  { path: "/OTPAPI", element: <OTPAPI /> },
+  { path: "/EmailAPI", element: <EmailAPI /> },
   { path: "/BulkSMS", element: <BulkSMS /> },
   { path: "/InternationalSMS", element: <InternationalSMS /> },
   { path: "/TwoFactorAuthentication", element: <TwoFactorAuthentication /> },
