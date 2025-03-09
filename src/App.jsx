@@ -18,6 +18,9 @@ const Error = lazy(() => import("./Pages/Error"));
 const RCS = lazy(() => import("./Pages/RCS/RCS"));
 const SMS = lazy(() => import("./Pages/SMS/SMS"));
 const SMSAPI = lazy(() => import("./Pages/SMS/SMSAPI"));
+const VoiceAPI = lazy(() => import("./Pages/VoiceAPI/VoiceAPI"));
+const EmailAPI = lazy(() => import("./Pages/EmailAPI/EmailAPI"));
+const OTPAPI = lazy(() => import("./Pages/OTPAPI/OTPAPI"));
 const BulkSMS = lazy(() => import("./Pages/SMS/BulkSMS"));
 const InternationalSMS = lazy(() => import("./Pages/SMS/InternationalSMS"));
 const TwoFactorAuthentication = lazy(() =>
@@ -38,10 +41,6 @@ const BulkEmailBlog = lazy(() => import("./Pages/Blog/BulkEmailBlog"));
 const SmsApiBlog = lazy(() => import("./Pages/Blog/SmsApiBlog"));
 const Blog = lazy(() => import("./Pages/Blog/Blog"));
 import ScrollToTop from "./ScrollToTop";
-// Action Functions
-import { handelScheduleDemo } from "./Pages/ScheduleDemo";
-import { handleContact } from "./Pages/Contact";
-import { handelCareer } from "./Pages/Career";
 
 // Reusable Page Wrapper
 const PageWrapper = ({ children }) => (
@@ -70,16 +69,15 @@ const routes = [
   { path: "/RCSPricing", element: <RCSPricing /> },
   { path: "/EmailPricing", element: <EmailPricing /> },
   { path: "/VoicePricing", element: <VoicePricing /> },
-  { path: "/Contact", element: <Contact />, action: handleContact },
-  {
-    path: "/ScheduleDemo",
-    element: <ScheduleDemo />,
-    action: handelScheduleDemo,
-  },
-  { path: "/Career", element: <Career />, action: handelCareer },
+  { path: "/Contact", element: <Contact /> },
+  { path: "/ScheduleDemo", element: <ScheduleDemo /> },
+  { path: "/Career", element: <Career /> },
   { path: "/RCS", element: <RCS /> },
   { path: "/SMS", element: <SMS /> },
   { path: "/SMSAPI", element: <SMSAPI /> },
+  { path: "/VoiceAPI", element: <VoiceAPI /> },
+  { path: "/OTPAPI", element: <OTPAPI /> },
+  { path: "/EmailAPI", element: <EmailAPI /> },
   { path: "/BulkSMS", element: <BulkSMS /> },
   { path: "/InternationalSMS", element: <InternationalSMS /> },
   { path: "/TwoFactorAuthentication", element: <TwoFactorAuthentication /> },

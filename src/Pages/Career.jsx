@@ -1,43 +1,60 @@
 import { CommonHeading } from "../CommonComponent/CommonHeading";
-import { Form, useActionData } from "react-router-dom";
+import { Form } from "react-router-dom";
 import { useState } from "react";
 
-// Action function for handling form submissions
-export const handelCareer = async ({ request }) => {
-  try {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-
-    const { email, phone } = data;
-
-    // Validate Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return { error: "Invalid email format" };
-    }
-
-    // Validate Phone Number (example for 10-digit number)
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phoneRegex.test(phone)) {
-      return { error: "Invalid phone number. Must be 10 digits." };
-    }
-
-    console.log("Validated data:", data);
-    return { success: "Form submitted successfully!" };
-  } catch (error) {
-    console.error("Error handling form submission:", error);
-    return { error: "An unexpected error occurred. Please try again." };
-  }
-};
+const CONTACT_EMAIL_ACCESS_KEY = import.meta.env.VITE_EMAIL_ACCESS_TOKEN;
 
 function Career() {
-  const [error, setError] = useState(null);
-  const actionData = useActionData();
+  const [formStatus, setFormStatus] = useState({
+    loading: false,
+    success: null,
+    error: null,
+  });
 
-  // Update error state when actionData has errors
-  if (actionData?.error && actionData.error !== error) {
-    setError(actionData.error);
-  }
+  // Direct form submission handler as backup
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setFormStatus({ loading: true, success: null, error: null });
+
+    try {
+      const formData = new FormData(event.target);
+
+      formData.append("access_key", CONTACT_EMAIL_ACCESS_KEY);
+
+      const json = JSON.stringify(Object.fromEntries(formData));
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setFormStatus({
+          loading: false,
+          success:
+            "Thank you for your application! We will review it and get back to you soon.",
+          error: null,
+        });
+        // Reset the form
+        event.target.reset();
+      } else {
+        throw new Error(result.message || "Failed to submit form.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setFormStatus({
+        loading: false,
+        success: null,
+        error: error.message || "An error occurred. Please try again.",
+      });
+    }
+  };
 
   return (
     <section>
@@ -58,7 +75,8 @@ function Career() {
             <div>
               <p>Connex Better headquarters</p>
               <p className="font-semibold">
-                Innov8, 3rd Floor, Plot No. 211, Okhla Phase 3, Delhi, Delhi 110020, IN
+                Innov8, 3rd Floor, Plot No. 211, Okhla Phase 3, Delhi, Delhi
+                110020, IN
               </p>
             </div>
           </div>
@@ -68,10 +86,22 @@ function Career() {
             method="POST"
             action="/Career"
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            onSubmit={onSubmit}
           >
+            {/* Hidden fields for source tracking */}
+            <input type="hidden" name="form_source" value="Careers Page" />
+            <input
+              type="hidden"
+              name="subject"
+              value="New Job Application Request"
+            />
+
             {/* Email Field */}
             <div className="col-span-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -84,7 +114,10 @@ function Career() {
             </div>
             {/* Name Field */}
             <div className="col-span-2 md:col-span-1">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Your Name
               </label>
               <input
@@ -97,7 +130,10 @@ function Career() {
             </div>
             {/* Phone Number Field */}
             <div className="col-span-2 md:col-span-1">
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Phone Number
               </label>
               <input
@@ -112,10 +148,14 @@ function Career() {
             </div>
             {/* Department Field */}
             <div className="col-span-2">
-              <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="department"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Department
               </label>
               <select
+                id="department"
                 name="department"
                 required
                 className="mt-1 p-2 w-full border border-[#555555] rounded-md bg-[#f4f4f4] focus:ring-blue-500 focus:border-blue-500"
@@ -129,14 +169,38 @@ function Career() {
                 <option value="Other">Other</option>
               </select>
             </div>
+
+            {/* Resume Upload Field - Note: Web3Forms doesn't directly support file uploads */}
+            <div className="col-span-2">
+              <label
+                htmlFor="resumeLink"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Resume Link (Google Drive, Dropbox, etc.)
+              </label>
+              <input
+                type="url"
+                id="resumeLink"
+                name="resumeLink"
+                placeholder="https://drive.google.com/..."
+                className="mt-1 p-2 w-full border border-[#555555] rounded-md bg-[#f4f4f4] focus:ring-blue-500 focus:border-blue-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Please upload your resume to a cloud service and share the link
+              </p>
+            </div>
+
             {/* Message Field */}
             <div className="col-span-2">
-              <label htmlFor="msg" className="block text-sm font-medium text-gray-700">
-                Message
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Message / Cover Letter
               </label>
               <textarea
-                id="msg"
-                name="msg"
+                id="message"
+                name="message"
                 rows={4}
                 required
                 className="mt-1 p-2 w-full border border-[#555555] rounded-md bg-[#f4f4f4] focus:ring-blue-500 focus:border-blue-500"
@@ -145,23 +209,39 @@ function Career() {
             {/* Agreement Checkbox */}
             <div className="col-span-2">
               <label className="flex items-center">
-                <input type="checkbox" required className="mr-2" />
-                By clicking "Contact Us," I agree to receive communication on newsletters, promotional content, offers and events through SMS, RCS, WhatsApp.
+                <input
+                  type="checkbox"
+                  name="agreement"
+                  required
+                  className="mr-2"
+                />
+                By clicking "Submit," I agree to receive communication on
+                newsletters, promotional content, offers and events through SMS,
+                RCS, WhatsApp.
               </label>
             </div>
             {/* Submit Button */}
             <div className="col-span-2">
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                disabled={formStatus.loading}
+                className={`${
+                  formStatus.loading
+                    ? "bg-blue-300"
+                    : "bg-blue-500 hover:bg-blue-700"
+                } text-white font-bold py-2 px-4 rounded w-full`}
               >
-                Submit
+                {formStatus.loading ? "Submitting..." : "Submit Application"}
               </button>
             </div>
           </Form>
           {/* Error/Success Messages */}
-          {error && <p className="text-red-500 text-base mt-2">{error}</p>}
-          {actionData?.success && <p className="text-green-500 text-base mt-2">{actionData.success}</p>}
+          {formStatus.error && (
+            <p className="text-red-500 text-sm mt-2">{formStatus.error}</p>
+          )}
+          {formStatus.success && (
+            <p className="text-green-500 text-sm mt-2">{formStatus.success}</p>
+          )}
         </div>
       </div>
       <div className="container md:hidden">
@@ -172,11 +252,13 @@ function Career() {
         <div>
           <p>Connex Better headquarters</p>
           <p className="font-semibold">
-            Innov8, 3rd Floor, Plot No. 211, Okhla Phase 3, Delhi, Delhi 110020, IN
+            Innov8, 3rd Floor, Plot No. 211, Okhla Phase 3, Delhi, Delhi 110020,
+            IN
           </p>
         </div>
       </div>
     </section>
   );
 }
+
 export default Career;
